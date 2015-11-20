@@ -1,0 +1,21 @@
+{
+  "config": {
+    "bin-dir": "bin/"
+  },
+  "name": "newage/zf2-simple-orm",
+  "description": "",
+  "license": "MIT",
+  "keywords": [],
+  "require": {
+    "php": ">=5.5",
+    "doctrine/common": ">=2.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.8.*"
+  },
+  "autoload": {
+    "psr-0": {
+      "SimpleOrm": "src/"
+    }
+  }
+}
