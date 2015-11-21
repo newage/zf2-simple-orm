@@ -2,7 +2,8 @@
 
 namespace SimpleOrm\Controller;
 
-use SimpleOrm\Mapper\Annotation\AnnotationBuilder;
+use SimpleOrm\Example\Model\User;
+use SimpleOrm\Entity\Annotation\AnnotationBuilder;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Console\ColorInterface as Color;
 use Zend\Console\Adapter\AdapterInterface as Console;
@@ -19,10 +20,10 @@ class MapperController extends AbstractActionController
     public function generateAction()
     {
         /* @var $console Console */
-        $console    = $this->getServiceLocator()->get('console');
+        $console = $this->getServiceLocator()->get('console');
 
         $annotationBuilder = new AnnotationBuilder();
-        $annotationBuilder->create();
+        $annotationBuilder->create(new User());
 
         $console->writeLine('Map had been generated successful', Color::GREEN);
     }

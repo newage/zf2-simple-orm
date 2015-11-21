@@ -1,6 +1,6 @@
 <?php
 
-namespace SimpleOrm\Mapper\Annotation;
+namespace SimpleOrm\Entity\Annotation;
 
 /**
  * Class Id
