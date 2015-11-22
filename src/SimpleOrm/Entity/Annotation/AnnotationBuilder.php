@@ -3,14 +3,14 @@
 namespace SimpleOrm\Entity\Annotation;
 
 use SimpleOrm\Entity\EntityInterface;
-use SimpleOrm\Mapper\Annotation\MapperAnnotationListener;
+use SimpleOrm\Mapper\Annotation\EntityAnnotationListener;
+use SimpleOrm\Mapper\Annotation\PropertyAnnotationListener;
 use SimpleOrm\Mapper\MapperBuilder;
 use Zend\Code\Annotation\AnnotationCollection;
 use Zend\Code\Annotation\AnnotationManager;
 use Zend\Code\Annotation\Parser;
 use Zend\Code\Reflection\ClassReflection;
 use Zend\Code\Reflection\PropertyReflection;
-use Zend\EventManager\Event;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
@@ -26,7 +26,7 @@ class AnnotationBuilder implements EventManagerAwareInterface
     /**
      * @var \SimpleOrm\Mapper\MapperBuilder
      */
-    protected $mapperFactory;
+    protected $mapperBuilder;
 
     /**
      * @var Parser\DoctrineAnnotationParser
@@ -50,11 +50,16 @@ class AnnotationBuilder implements EventManagerAwareInterface
         'Table',
         'Id',
         'Column',
+        'OneToOne',
+        'OneToMany',
+        'ManyToOne',
+        'ManyToMany'
     ];
 
     /**
      * Create annotations from entity
      * @param EntityInterface $entity
+     * @return ArrayObject
      */
     public function create($entity)
     {
@@ -63,7 +68,7 @@ class AnnotationBuilder implements EventManagerAwareInterface
         }
 
         $spec = $this->getSpecification($entity);
-        $factory = $this->getMapperFactory();
+        $factory = $this->getMapperBuilder();
         $factory->create($spec);
     }
 
@@ -104,6 +109,7 @@ class AnnotationBuilder implements EventManagerAwareInterface
     protected function configureEntity($annotations, $reflection, $spec)
     {
         $name = $reflection->getShortName();
+        $spec['entity'] = $name;
 
         $events = $this->getEventManager();
         foreach ($annotations as $annotation) {
@@ -112,8 +118,7 @@ class AnnotationBuilder implements EventManagerAwareInterface
                 $this,
                 [
                     'annotation' => $annotation,
-                    'spec'       => $spec,
-                    'name'       => $name
+                    'spec'       => $spec
                 ]
             );
         }
@@ -160,7 +165,8 @@ class AnnotationBuilder implements EventManagerAwareInterface
             __CLASS__,
             get_class($this),
         ]);
-        $events->attach(new MapperAnnotationListener());
+        $events->attach(new EntityAnnotationListener());
+        $events->attach(new PropertyAnnotationListener());
         $this->events = $events;
         return $this;
     }
@@ -182,17 +188,17 @@ class AnnotationBuilder implements EventManagerAwareInterface
      * Get mapper builder
      * @return MapperBuilder
      */
-    public function getMapperFactory()
+    public function getMapperBuilder()
     {
-        if (!$this->mapperFactory) {
-            $this->setMapperFactory(new MapperBuilder());
+        if (!$this->mapperBuilder) {
+            $this->setMapperBuilder(new MapperBuilder());
         }
-        return $this->mapperFactory;
+        return $this->mapperBuilder;
     }
 
-    public function setMapperFactory(MapperBuilder $mapperFactory)
+    public function setMapperBuilder(MapperBuilder $mapperBuilder)
     {
-        $this->mapperFactory = $mapperFactory;
+        $this->mapperBuilder = $mapperBuilder;
     }
 
     /**

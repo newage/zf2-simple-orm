@@ -1,10 +1,14 @@
 <?php
 
 $config = [
-    'AnnotationBuilder' => [
-        'cache_path' => __DIR__ . '../build/',
-        'models' => [
-            ['path' => __DIR__ . '../example/Model/']
+    'SimpleOrm' => [
+        'AnnotationBuilder' => [
+            'models' => [
+                ['path' => __DIR__ . '/../examples/ExampleModel/Model/']
+            ]
+        ],
+        'MapperBuilder' => [
+            'path' => __DIR__ . '/../build/'
         ]
     ],
     'controllers' => [
