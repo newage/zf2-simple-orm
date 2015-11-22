@@ -40,7 +40,6 @@ class PropertyAnnotationListener extends AbstractAnnotationListener
         }
 
         $spec = $event->getParam('spec');
-        $spec['property'] = $event->getParam('name');
         $spec['column'] = $annotation->getName();
     }
 

@@ -113,7 +113,6 @@ class AnnotationBuilder implements EventManagerAwareInterface
         return $spec;
     }
 
-
     /**
      * @param AnnotationCollection $annotations
      * @param ClassReflection      $reflection
@@ -131,7 +130,8 @@ class AnnotationBuilder implements EventManagerAwareInterface
                 $this,
                 [
                     'annotation' => $annotation,
-                    'spec'       => $spec
+                    'spec'       => $spec,
+                    'name'       => $name
                 ]
             );
         }
@@ -145,7 +145,9 @@ class AnnotationBuilder implements EventManagerAwareInterface
     protected function configureProperty($annotations, $reflection, $spec)
     {
         $name = $reflection->getName();
-        $propertySpec = new ArrayObject();
+        $propertySpec = new ArrayObject([
+            'property' => $name
+        ]);
 
         $events = $this->getEventManager();
         foreach ($annotations as $annotation) {
