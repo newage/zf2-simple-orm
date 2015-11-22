@@ -11,6 +11,7 @@ use Zend\Stdlib\ArrayObject;
 class MapperBuilder
 {
     const MAPPER_NAME = 'generated_map.php';
+    const BUILD_PATH = __DIR__ . '../../../build/';
 
     /**
      * Path to save generated maps
@@ -18,24 +19,8 @@ class MapperBuilder
      */
     protected $buildPath;
 
-    public function create(ArrayObject $specification)
+    public function create(ArrayObject $spec)
     {
 
-    }
-
-    /**
-     * @return string
-     */
-    public function getBuildPath()
-    {
-        return $this->buildPath;
-    }
-
-    /**
-     * @param string $buildPath
-     */
-    public function setBuildPath($buildPath)
-    {
-        $this->buildPath = $buildPath;
     }
 }

@@ -25,6 +25,6 @@ class MapperController extends AbstractActionController
         $annotationBuilder = new AnnotationBuilder();
         $annotationBuilder->create(new User());
 
-        $console->writeLine('Map had been generated successful', Color::GREEN);
+        $console->writeLine('Map has been generated successful', Color::GREEN);
     }
 }

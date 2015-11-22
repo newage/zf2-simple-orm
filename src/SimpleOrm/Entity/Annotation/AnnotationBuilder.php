@@ -9,6 +9,8 @@ use Zend\Code\Annotation\AnnotationCollection;
 use Zend\Code\Annotation\AnnotationManager;
 use Zend\Code\Annotation\Parser;
 use Zend\Code\Reflection\ClassReflection;
+use Zend\Code\Reflection\PropertyReflection;
+use Zend\EventManager\Event;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
@@ -79,14 +81,14 @@ class AnnotationBuilder implements EventManagerAwareInterface
         $annotations = $reflection->getAnnotations($annotationManager);
 
         if ($annotations instanceof AnnotationCollection) {
-            $this->configureEntity($annotations, $spec);
+            $this->configureEntity($annotations, $reflection, $spec);
         }
 
         foreach ($reflection->getProperties() as $property) {
             $annotations = $property->getAnnotations($annotationManager);
 
             if ($annotations instanceof AnnotationCollection) {
-                $this->configureColumn($annotations, $spec);
+                $this->configureProperty($annotations, $property, $spec);
             }
         }
 
@@ -96,19 +98,22 @@ class AnnotationBuilder implements EventManagerAwareInterface
 
     /**
      * @param AnnotationCollection $annotations
+     * @param ClassReflection      $reflection
      * @param ArrayObject          $spec
      */
-    protected function configureEntity(AnnotationCollection $annotations, $spec)
+    protected function configureEntity($annotations, $reflection, $spec)
     {
-        $events = $this->getEventManager();
+        $name = $reflection->getShortName();
 
+        $events = $this->getEventManager();
         foreach ($annotations as $annotation) {
             $events->trigger(
                 __FUNCTION__,
                 $this,
                 [
                     'annotation' => $annotation,
-                    'spec'       => $spec
+                    'spec'       => $spec,
+                    'name'       => $name
                 ]
             );
         }
@@ -116,11 +121,31 @@ class AnnotationBuilder implements EventManagerAwareInterface
 
     /**
      * @param AnnotationCollection $annotations
-     * @param                      $spec
+     * @param PropertyReflection   $reflection
+     * @param ArrayObject          $spec
      */
-    protected function configureColumn(AnnotationCollection $annotations, $spec)
+    protected function configureProperty($annotations, $reflection, $spec)
     {
+        $name = $reflection->getName();
+        $propertySpec = new ArrayObject();
 
+        $events = $this->getEventManager();
+        foreach ($annotations as $annotation) {
+            $events->trigger(
+                __FUNCTION__,
+                $this,
+                [
+                    'annotation' => $annotation,
+                    'spec'       => $propertySpec,
+                    'name'       => $name
+                ]
+            );
+        }
+
+        if (!isset($spec['properties'])) {
+            $spec['properties'] = [];
+        }
+        $spec['properties'][] = $propertySpec;
     }
 
     /**
