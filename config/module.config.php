@@ -4,7 +4,10 @@ $config = [
     'SimpleOrm' => [
         'AnnotationBuilder' => [
             'models' => [
-                ['path' => __DIR__ . '/../examples/ExampleModel/Model/']
+                [
+                    'path' => __DIR__ . '/../examples/ExampleModel/Model',
+                    'namespace' => 'ExampleModel\Model'
+                ]
             ]
         ],
         'MapperBuilder' => [
