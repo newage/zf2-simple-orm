@@ -29,7 +29,7 @@ class User implements EntityInterface
 
     /**
      * @Annotation\Column({"type":"integer", "name":"role_id"})
-     * @Annotation\OneToOne({"targetEntity":"Role", "columnName"="role_id", "referencedColumnName"="id"})
+     * @Annotation\OneToOne({"targetEntity":"\ExampleModel\Model\Role", "columnName"="role_id", "referencedColumnName"="id"})
      */
     protected $role;
 
