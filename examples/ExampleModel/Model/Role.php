@@ -2,10 +2,12 @@
 
 namespace ExampleModel\Model;
 
+use SimpleOrm\Entity\EntityInterface;
+
 /**
  * @Annotation\Table({"name":"roles"})
  */
-class Role
+class Role implements EntityInterface
 {
     /**
      * @Annotation\Id()

@@ -44,6 +44,11 @@ class AnnotationBuilder implements EventManagerAwareInterface
     protected $events;
 
     /**
+     * @var array
+     */
+    protected $options;
+
+    /**
      * @var array Default annotations to register
      */
     protected $defaultAnnotations = [
@@ -58,29 +63,36 @@ class AnnotationBuilder implements EventManagerAwareInterface
 
     /**
      * Create annotations from entity
-     * @param EntityInterface $entity
      * @return ArrayObject
      */
-    public function create($entity)
+    public function create()
     {
-        if (is_object($entity) && !$entity instanceof EntityInterface) {
-            throw new \RuntimeException('Entity must implement `EntityInterface`');
-        }
-
-        $spec = $this->getSpecification($entity);
+        $spec = new ArrayObject();
         $factory = $this->getMapperBuilder();
+        $modelsOptions = $this->getOptions('models');
+        foreach ($modelsOptions as $modelOption) {
+            foreach (new \FilesystemIterator($modelOption['path']) as $file) {
+                $entityName = substr($file->getFileName(), 0, -4);
+                $entityNamespace = '\\' . $modelOption['namespace'] . '\\' . $entityName;
+
+                $entity = new $entityNamespace();
+                if (is_object($entity) && !$entity instanceof EntityInterface) {
+                    throw new \RuntimeException('Entity must implement `EntityInterface`');
+                }
+                $this->getSpecification($entity, $spec);
+            }
+        };
         $factory->create($spec);
     }
 
     /**
      * @param $entity
+     * @param $spec
      * @return ArrayObject
      */
-    protected function getSpecification($entity)
+    protected function getSpecification($entity, $spec)
     {
         $annotationManager = $this->getAnnotationManager();
-
-        $spec = new ArrayObject();
 
         $reflection  = new ClassReflection($entity);
         $annotations = $reflection->getAnnotations($annotationManager);
@@ -108,7 +120,7 @@ class AnnotationBuilder implements EventManagerAwareInterface
      */
     protected function configureEntity($annotations, $reflection, $spec)
     {
-        $name = $reflection->getShortName();
+        $name = $reflection->getName();
         $spec['entity'] = $name;
 
         $events = $this->getEventManager();
@@ -238,5 +250,27 @@ class AnnotationBuilder implements EventManagerAwareInterface
         }
 
         return $this->annotationParser;
+    }
+
+    /**
+     * Get one option or options array
+     * @param null $name
+     * @return array
+     */
+    public function getOptions($name = null)
+    {
+        if (isset($this->options[$name])) {
+            return $this->options[$name];
+        }
+        return $this->options;
+    }
+
+    /**
+     * Set options array
+     * @param array $options
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
     }
 }

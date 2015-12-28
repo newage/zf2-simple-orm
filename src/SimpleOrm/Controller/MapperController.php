@@ -2,7 +2,6 @@
 
 namespace SimpleOrm\Controller;
 
-use ExampleModel\Model\User;
 use SimpleOrm\Entity\Annotation\AnnotationBuilder;
 use SimpleOrm\Mapper\MapperBuilder;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -28,8 +27,9 @@ class MapperController extends AbstractActionController
         $mapperBuilder->setConfig($config['SimpleOrm']['MapperBuilder']);
 
         $annotationBuilder = new AnnotationBuilder();
+        $annotationBuilder->setOptions($config['SimpleOrm']['AnnotationBuilder']);
         $annotationBuilder->setMapperBuilder($mapperBuilder);
-        $annotationBuilder->create(new User());
+        $annotationBuilder->create();
 
         $console->writeLine('Map has been generated successful', Color::GREEN);
     }
