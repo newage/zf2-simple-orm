@@ -35,10 +35,10 @@ class MapperBuilder
         $filePath = $this->getConfig('path') . self::MAPPER_NAME;
         $configArray = new ArrayObject();
 
-        foreach ($spec as $item => $value) {
-            if ($item == 'entity') {
-                unset($spec['entity']);
-                $configArray[$value] = $spec;
+        foreach ($spec['entities'] as &$entity) {
+            if (isset($entity['entity'])) {
+                $configArray[$entity['entity']] = $entity;
+                unset($entity['entity']);
             }
         }
 

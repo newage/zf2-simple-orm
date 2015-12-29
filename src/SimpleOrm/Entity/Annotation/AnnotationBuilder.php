@@ -15,7 +15,6 @@ use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Stdlib\ArrayObject;
-use Zend\Stdlib\ArrayUtils;
 
 /**
  * Class AnnotationBuilder
@@ -67,7 +66,7 @@ class AnnotationBuilder implements EventManagerAwareInterface
      */
     public function create()
     {
-        $spec = new ArrayObject();
+        $spec = new ArrayObject(['entities' => []]);
         $factory = $this->getMapperBuilder();
         $modelsOptions = $this->getOptions('models');
         foreach ($modelsOptions as $modelOption) {
@@ -79,7 +78,7 @@ class AnnotationBuilder implements EventManagerAwareInterface
                 if (is_object($entity) && !$entity instanceof EntityInterface) {
                     throw new \RuntimeException('Entity must implement `EntityInterface`');
                 }
-                $this->getSpecification($entity, $spec);
+                $spec['entities'][] = $this->getSpecification($entity);
             }
         };
         $factory->create($spec);
@@ -87,13 +86,14 @@ class AnnotationBuilder implements EventManagerAwareInterface
 
     /**
      * @param $entity
-     * @param $spec
      * @return ArrayObject
+     * @internal param $spec
      */
-    protected function getSpecification($entity, $spec)
+    protected function getSpecification($entity)
     {
         $annotationManager = $this->getAnnotationManager();
 
+        $spec = new ArrayObject();
         $reflection  = new ClassReflection($entity);
         $annotations = $reflection->getAnnotations($annotationManager);
 

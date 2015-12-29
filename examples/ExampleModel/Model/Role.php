@@ -3,6 +3,7 @@
 namespace ExampleModel\Model;
 
 use SimpleOrm\Entity\EntityInterface;
+use SimpleOrm\Entity\Annotation;
 
 /**
  * @Annotation\Table({"name":"roles"})
