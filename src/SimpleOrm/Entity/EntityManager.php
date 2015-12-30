@@ -4,6 +4,8 @@ namespace SimpleOrm\Entity;
 
 use SplObjectStorage;
 use InvalidArgumentException;
+use Zend\Db\Sql\Select;
+use Zend\Stdlib\ArrayObject;
 
 /**
  * Class EntityManager
@@ -18,33 +20,73 @@ class EntityManager
     protected $entity;
 
     /**
-     * @var SplObjectStorage
+     * @var ArrayObject
      */
     protected $children;
 
     /**
      * EntityManager constructor.
-     * @param string|EntityInterface $entity
      */
-    public function __construct($entity)
+    public function __construct()
     {
-        $this->entity = $this->createEntity($entity);
-        $this->children = new SplObjectStorage();
+        $this->children = new ArrayObject();
     }
 
     /**
      * Join entity
      * @param $entity
+     * @param Select $filter
      * @return EntityManager
      */
-    public function join($entity)
+    public function join($entity, $filter = null)
     {
         $entity = new EntityManager($this->createEntity($entity));
-        $this->children->attach($entity);
+        $this->getChildren()->append([$entity, $filter]);
 
         return $entity;
     }
 
+    /**
+     * Execute
+     * @return array
+     */
+    public function execute()
+    {
+        $collection = [];
+        foreach ($this->children as $children) {
+            list($entity, $filter) = $children;
+            /* Apply filter to current entity */
+            if ($filter instanceof Select) {
+
+            }
+
+            /* Call children if exists */
+            if ($entity->getChildren()) {
+
+            }
+
+            $collection[] = $entity;
+        }
+
+        return $collection;
+    }
+
+    /**
+     * @return ArrayObject
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param ArrayObject $children
+     */
+    public function setChildren($children)
+    {
+        $this->children = $children;
+    }
+    
     /**
      * Create entity
      * @param $entity
@@ -52,7 +94,7 @@ class EntityManager
     protected function createEntity($entity)
     {
         if (is_string($entity) && class_exists($entity)) {
-            $this->entity = new $entity();
+            $entity = new $entity();
         } else {
             throw new InvalidArgumentException('Entity does not exists: ' . $entity);
         }

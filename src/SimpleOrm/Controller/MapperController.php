@@ -3,6 +3,7 @@
 namespace SimpleOrm\Controller;
 
 use SimpleOrm\Entity\Annotation\AnnotationBuilder;
+use SimpleOrm\Entity\EntityManager;
 use SimpleOrm\Mapper\MapperBuilder;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Console\ColorInterface as Color;
@@ -15,7 +16,7 @@ use Zend\Console\Adapter\AdapterInterface as Console;
 class MapperController extends AbstractActionController
 {
     /**
-     *
+     * Generate mapper file
      */
     public function generateAction()
     {
@@ -32,5 +33,13 @@ class MapperController extends AbstractActionController
         $annotationBuilder->create();
 
         $console->writeLine('Map has been generated successful', Color::GREEN);
+    }
+
+    public function testAction()
+    {
+        $manager = new EntityManager();
+        $manager->join('ExampleModel\\Model\\User')->join('ExampleModel\\Model\\Role');
+        $collection = $manager->execute();
+        var_dump($collection); die();
     }
 }
