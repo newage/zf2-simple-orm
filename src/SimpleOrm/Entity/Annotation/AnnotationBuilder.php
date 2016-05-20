@@ -75,9 +75,6 @@ class AnnotationBuilder implements EventManagerAwareInterface
                 $entityNamespace = '\\' . $modelOption['namespace'] . '\\' . $entityName;
 
                 $entity = new $entityNamespace();
-                if (is_object($entity) && !$entity instanceof EntityInterface) {
-                    throw new \RuntimeException('Entity must implement `EntityInterface`');
-                }
                 $spec['entities'][] = $this->getSpecification($entity);
             }
         };
