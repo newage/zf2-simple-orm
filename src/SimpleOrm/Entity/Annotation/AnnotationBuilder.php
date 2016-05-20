@@ -74,6 +74,10 @@ class AnnotationBuilder implements EventManagerAwareInterface
                 $entityName = substr($file->getFileName(), 0, -4);
                 $entityNamespace = '\\' . $modelOption['namespace'] . '\\' . $entityName;
 
+                if (!class_exists($entityNamespace)) {
+                    continue;
+                }
+                
                 $entity = new $entityNamespace();
                 $spec['entities'][] = $this->getSpecification($entity);
             }
