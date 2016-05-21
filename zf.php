@@ -2,6 +2,7 @@
 <?php
 
 $basePath = getcwd();
+chdir(__DIR__);
 
 ini_set('user_agent', 'Zend Framework 2 command line tool');
 

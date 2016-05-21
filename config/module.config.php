@@ -5,18 +5,18 @@ $config = [
         'AnnotationBuilder' => [
             'models' => [
                 [
-                    'path' => __DIR__ . '/../examples/ExampleModel/Model',
+                    'path' => 'examples/Model',
                     'namespace' => 'ExampleModel\Model'
                 ]
             ]
         ],
         'MapperBuilder' => [
-            'path' => __DIR__ . '/../build/'
+            'path' => 'build/'
         ]
     ],
     'controllers' => [
         'invokables' => [
-            'SimpleOrm\Controller\Mapper' => 'SimpleOrm\Controller\MapperController'
+            'MapperController' => 'SimpleOrm\Controller\MapperController'
         ]
     ],
     'console' => [
@@ -26,16 +26,16 @@ $config = [
                     'options' => [
                         'route'    => 'mapper generate',
                         'defaults' => [
-                            'controller' => 'SimpleOrm\Controller\Mapper',
+                            'controller' => 'MapperController',
                             'action'     => 'generate'
                         ]
                     ]
                 ],
                 'test' => [
                     'options' => [
-                        'route'    => 'test',
+                        'route'    => 'mapper test',
                         'defaults' => [
-                            'controller' => 'SimpleOrm\Controller\Mapper',
+                            'controller' => 'MapperController',
                             'action'     => 'test'
                         ]
                     ]
@@ -49,7 +49,6 @@ $config = [
         'username'  => 'root',
         'password'  => '123456',
         'hostname'  => '127.0.0.1',
-        'unix_socket' => '', // for local sphinx fast connection
         'driver_options' => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         )

@@ -2,7 +2,6 @@
 
 namespace SimpleOrm\Entity\Annotation;
 
-
 class AbstractAnnotation
 {
     /**
