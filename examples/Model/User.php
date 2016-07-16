@@ -8,7 +8,7 @@ use SimpleOrm\Entity\Annotation;
 /**
  * @Annotation\Table({"name":"users"})
  */
-class User implements EntityInterface
+class User
 {
     /**
      * @Annotation\Id()

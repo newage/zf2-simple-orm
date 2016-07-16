@@ -1,7 +1,10 @@
 <?php
 
 $config = [
-    'SimpleOrm' => [
+    'modules' => [
+        'Newage\Annotations',
+    ],
+    'annotations' => [
         'AnnotationBuilder' => [
             'models' => [
                 [
@@ -14,41 +17,12 @@ $config = [
             'path' => 'build/'
         ]
     ],
-    'controllers' => [
-        'invokables' => [
-            'MapperController' => 'SimpleOrm\Controller\MapperController'
-        ]
-    ],
-    'console' => [
-        'router' => [
-            'routes' => [
-                'generate' => [
-                    'options' => [
-                        'route'    => 'mapper generate',
-                        'defaults' => [
-                            'controller' => 'MapperController',
-                            'action'     => 'generate'
-                        ]
-                    ]
-                ],
-                'test' => [
-                    'options' => [
-                        'route'    => 'mapper test',
-                        'defaults' => [
-                            'controller' => 'MapperController',
-                            'action'     => 'test'
-                        ]
-                    ]
-                ]
-            ]
-        ]
-    ],
     'db' => array(
         'driver'    => 'Pdo_Mysql',
         'database'  => 'test',
         'username'  => 'root',
         'password'  => '123456',
-        'hostname'  => '127.0.0.1',
+        'hostname'  => '172.17.0.2',
         'driver_options' => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         )

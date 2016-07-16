@@ -21,14 +21,19 @@ if (file_exists("$basePath/vendor/autoload.php")) {
 
 if (file_exists("$basePath/config/application.config.php")) {
     $appConfig = require "$basePath/config/application.config.php";
-    if (!isset($appConfig['modules']['SimpleOrm'])) {
-        $appConfig['modules'][] = 'SimpleOrm';
-        $appConfig['module_listener_options']['module_paths']['SimpleOrm'] = __DIR__;
+    if (!isset($appConfig['modules']['Newage\SimpleOrm'])) {
+        $appConfig['modules'][] = 'Newage\SimpleOrm';
+        $appConfig['module_listener_options']['module_paths']['Newage\SimpleOrm'] = __DIR__;
+    }
+    if (!isset($appConfig['modules']['Newage\Annotations'])) {
+        $appConfig['modules'][] = 'Newage\Annotations';
+        $appConfig['module_listener_options']['module_paths']['Newage\Annotations'] = __DIR__;
     }
 } else {
     $appConfig = array(
         'modules' => array(
-            'SimpleOrm',
+            'Newage\SimpleOrm',
+            'Newage\Annotations',
         ),
         'module_listener_options' => array(
             'config_glob_paths'    => array(

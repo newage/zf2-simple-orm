@@ -1,4 +1,4 @@
-/.idea
-
-/bin
-/vendor
+.idea
+bin
+vendor
+composer.phar

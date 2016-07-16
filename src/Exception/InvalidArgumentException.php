@@ -1,6 +1,6 @@
 <?php
 
-namespace SimpleOrm\Exception;
+namespace Mewage\SimpleOrm\Exception;
 
 class InvalidArgumentException extends \InvalidArgumentException
 {
