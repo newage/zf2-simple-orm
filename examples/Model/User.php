@@ -2,8 +2,7 @@
 
 namespace ExampleModel\Model;
 
-use SimpleOrm\Entity\EntityInterface;
-use SimpleOrm\Entity\Annotation;
+use Newage\Annotations\Entity\Annotation;
 
 /**
  * @Annotation\Table({"name":"users"})
@@ -29,7 +28,9 @@ class User
 
     /**
      * @Annotation\Column({"type":"integer", "name":"role_id"})
-     * @Annotation\OneToOne({"targetEntity":"\ExampleModel\Model\Role", "columnName"="role_id", "referencedColumnName"="id"})
+     * @Annotation\OneToOne({"targetEntity":"\ExampleModel\Model\Role",
+     *     "columnName"="role_id",
+     *     "referencedColumnName"="id"})
      */
     protected $role;
 

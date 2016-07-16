@@ -2,8 +2,7 @@
 
 namespace ExampleModel\Model;
 
-use SimpleOrm\Entity\EntityInterface;
-use SimpleOrm\Entity\Annotation;
+use Newage\Annotations\Entity\Annotation;
 
 /**
  * @Annotation\Table({"name":"roles"})
